@@ -160,11 +160,13 @@ export const addNewDoctor = catchAsynchErrors(async (req, res, next) => {
   if (!req.files | (Object.keys(req.files).length === 0)) {
     return next(new ErrorHandler("Doctor Avatar require", 400));
   }
-  const { docAvatar } = req.files;
+ const { docAvatar } = req.files;
   const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
   if (!allowedFormats.includes(docAvatar.mimetype)) {
     return next(new ErrorHandler("File Format Not Supported!", 400));
   }
+
+  
   const {
     firstName,
     lastName,
