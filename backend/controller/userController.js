@@ -1,6 +1,7 @@
 import { catchAsynchErrors } from "../middlewares/catchAsynchError.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
 import { User } from "../models/userSchema.js";
+import { genrateToken } from "../utils/jwtToken.js";
 
 export const PatientRegister = catchAsynchErrors(async (req, res, next) => {
   const {
@@ -42,10 +43,7 @@ export const PatientRegister = catchAsynchErrors(async (req, res, next) => {
     nic,
     role,
   });
-  res.status(200).json({
-    success: true,
-    message: "User registred",
-  });
+  genrateToken(user, "user Registerd", 200, res);
 });
 
 export const login = catchAsynchErrors(async (req, res, next) => {
@@ -66,12 +64,48 @@ export const login = catchAsynchErrors(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid password", 400));
   }
-  if(role !== user.role){
+  if (role !== user.role) {
     return next(new ErrorHandler("User with this role not found", 400));
-
   }
+  genrateToken(user, "user Login succesfully", 200, res);
+});
+
+export const addNewAdmin = catchAsynchErrors(async (req, res, next) => {
+  const { firstName, lastName, email, phone, password, gender, dob, nic } =
+    req.body;
+
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !phone ||
+    !password ||
+    !gender ||
+    !dob ||
+    !nic
+  ) {
+    return next(new ErrorHandler("Please fill full form", 400));
+  }
+
+  const isRegistered = await User.findOne({ email });
+  if (isRegistered) {
+    return next(new ErrorHandler(`${isRegistered.role} with this email alreday exits`, 400));
+  }
+  const admin = await User.create({
+    firstName,
+    lastName,
+    email,
+    phone,
+    password,
+    gender,
+    dob,
+    nic,
+    role: "Admin",
+  });
   res.status(200).json({
     success:true,
-    message:"User logged in Succesfully"
+    message:"New admin Registerd"
   })
 });
+
+
