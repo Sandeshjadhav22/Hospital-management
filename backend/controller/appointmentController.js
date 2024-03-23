@@ -74,10 +74,49 @@ export const postAppointment = catchAsynchErrors(async (req, res, next) => {
     patientId,
   });
   res.status(200).json({
-    success:true,
-    message:"Appoinment sent successfully",
-    appointment
-  })
+    success: true,
+    message: "Appoinment sent successfully",
+    appointment,
+  });
 });
 
-//3:14
+export const getAllAppointments = catchAsynchErrors(async (req, res, next) => {
+  const appoinments = await Appointment.find();
+  res.status(200).json({
+    success: true,
+    appoinments,
+  });
+});
+
+export const updateAppoinmentStatus = catchAsynchErrors(
+  async (req, res, next) => {
+    const { id } = req.params;
+    let appoinment = await Appointment.findById(id);
+    if (!appoinment) {
+      return next(new ErrorHandler("Appoinmnet not found", 400));
+    }
+    appoinment = await Appointment.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+    res.status(200).json({
+      success: true,
+      message: "Appoinment status updated",
+      appoinment,
+    });
+  }
+);
+
+export const deleteAppoinment = catchAsynchErrors(async (req, res, next) => {
+  const { id } = req.params;
+  let appoinment = await Appointment.findById(id);
+  if (!appoinment) {
+    return next(new ErrorHandler("Appoinmnet not found", 400));
+  }
+  await appoinment.deleteOne();
+  res.status(200).json({
+    success: true,
+    message: "Appoinment delelted",
+  });
+});
