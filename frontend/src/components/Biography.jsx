@@ -1,10 +1,10 @@
 import React from "react";
 
-const Biography = ({ imgaeUrl }) => {
+const Biography = ({ imageUrl }) => {
   return (
     <div className="container biography">
       <div className="banner">
-        <img src={imgaeUrl} alt="aboutimg" />
+        <img src={imageUrl} alt="aboutimg" />
       </div>
       <div className="banner">
         <p>Biograpgyy</p>
