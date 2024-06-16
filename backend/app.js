@@ -14,7 +14,7 @@ const app = express();
 config({path: "./config/config.env"})
 
 app.use(cors({
-    origin:[process.env.FRONTEND_URI, process.env.DASHBOARD_URI],
+    origin:[https://hospital-management-frontend-ashy.vercel.app],
     methods:["GET","POST","PUT","DELETE"],
     credentials: true,
 }))
