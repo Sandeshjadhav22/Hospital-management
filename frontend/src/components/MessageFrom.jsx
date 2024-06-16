@@ -14,7 +14,7 @@ const MessageFrom = () => {
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/message/send",
+          "https://vercel.com/sandeshs-projects-5485184f/hospital-management-backend/api/v1/message/send",
           { firstName, lastName, phone, email, message },
           {
             withCredentials: true,

@@ -23,7 +23,7 @@ const Register = () => {
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/user/patient/register",
+          "https://vercel.com/sandeshs-projects-5485184f/hospital-management-backend/api/v1/user/patient/register",
           {
             firstName,
             lastName,
